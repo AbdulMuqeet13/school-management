@@ -8,6 +8,8 @@ use App\Repositories\LocationRepo;
 use App\Models\School;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\SystemSubject;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -52,17 +54,25 @@ class HomeController extends Controller
 
     public function link(){
         $data['user_types'] = $this->user->getAllTypes();
-        $data['schools'] = School::all();
+        if(Qs::userIsTeamSA()){
+            $data['schools'] = School::all();
+        }
+        else $data['schools'] = School::where('id',Auth::user()->school_id)->first();
+        // dd(Auth::user());
+        if (is_null($data['schools'])){
+            return redirect()->route('schools.index');
+        }
         return view('pages.support_team.create_link',$data);
     }
 
-    public function registerByUrl($type,$school){
+    public function registerByUrl($type,$school = null){
         $data['school']=School::find($school);
         $data['user_type'] = $this->user->getUserType($type);
         $data['states'] = $this->loc->getStates();
         $data['users'] = $this->user->getPTAUsers();
         $data['nationals'] = $this->loc->getAllNationals();
         $data['blood_groups'] = $this->user->getBloodGroups();
+        $data['subjects'] = $data['user_type']['title'] == 'teacher' ? SystemSubject::all() : null;
         return view('pages.other.register_by_url',$data);
     }
 }

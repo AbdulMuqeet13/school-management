@@ -23,9 +23,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 
+        'name',
         'username',
-         'email', 
+         'email',
          'phone',
          'phone2',
          'dob',
@@ -41,7 +41,8 @@ class User extends Authenticatable
          'code',
          'user_type',
          'email_verified_at',
-         'status'
+         'status',
+         'subject'
     ];
 
     /**
@@ -52,9 +53,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-    
-    public $status_ACTIVE = 1;
-    public $status_SUSPEND = 0;
+
+    const status_ACTIVE = 1;
+    const status_SUSPEND = 0;
 
     public function student_record()
     {

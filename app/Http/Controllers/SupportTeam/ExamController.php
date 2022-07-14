@@ -13,8 +13,8 @@ class ExamController extends Controller
     protected $exam;
     public function __construct(ExamRepo $exam)
     {
-        $this->middleware('teamSA', ['except' => ['destroy',] ]);
-        $this->middleware('super_admin', ['only' => ['destroy',] ]);
+        // $this->middleware('teamSA', ['except' => ['destroy',] ]);
+        // $this->middleware('super_admin', ['only' => ['destroy',] ]);
 
         $this->exam = $exam;
     }

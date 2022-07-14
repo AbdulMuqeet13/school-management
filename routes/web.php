@@ -1,5 +1,7 @@
 <?php
 use App\Http\Controllers\SupportTeam\SubjectController;
+use App\Http\Controllers\SupportTeam\UserController;
+// use App\Http\Controllers\SupportTeam\ExamController;
 use App\Http\Controllers\SuperAdmin\SchoolController;
 
 Auth::routes();
@@ -7,10 +9,20 @@ Auth::routes();
 //Route::get('/test', 'TestController@index')->name('test');
 Route::get('/privacy-policy', 'HomeController@privacy_policy')->name('privacy_policy');
 Route::get('/terms-of-use', 'HomeController@terms_of_use')->name('terms_of_use');
-Route::get('/register-by-url/{type}/{school}', 'HomeController@registerByUrl')->name('registerByUrl');
-
+Route::get('/register-by-url/{type}/{school?}', 'HomeController@registerByUrl')->name('registerByUrl');
+/************************ AJAX ****************************/
+Route::group(['prefix' => 'ajax'], function() {
+    Route::get('get_lga/{state_id}', 'AjaxController@get_lga')->name('get_lga');
+    Route::get('get_class_sections/{class_id}', 'AjaxController@get_class_sections')->name('get_class_sections');
+    Route::get('get_class_subjects/{class_id}', 'AjaxController@get_class_subjects')->name('get_class_subjects');
+});
+Route::post('save-user-by-url',[UserController::class,'saveUser'])->name('user.saveByURL');
 
 Route::group(['middleware' => 'auth'], function () {
+
+    Route::resource('exams', SupportTeam\ExamController::class);
+    Route::resource('students', SupportTeam\StudentRecordController::class);
+
 
     Route::get('/', 'HomeController@dashboard')->name('home');
     Route::get('/home', 'HomeController@dashboard')->name('home');
@@ -32,7 +44,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     /*************** Support Team *****************/
-    Route::group(['namespace' => 'SupportTeam',], function(){
+    Route::group(['namespace' => 'SupportTeam'], function(){
 
         /*************** Students *****************/
         Route::group(['prefix' => 'students'], function(){
@@ -147,13 +159,12 @@ Route::group(['middleware' => 'auth'], function () {
 
         });
 
-        Route::resource('students', 'StudentRecordController');
         Route::resource('users', 'UserController');
         Route::resource('classes', 'MyClassController');
         Route::resource('sections', 'SectionController');
         Route::resource('subjects', 'SubjectController');
         Route::resource('grades', 'GradeController');
-        Route::resource('exams', 'ExamController');
+
         Route::resource('dorms', 'DormController');
         Route::resource('payments', 'PaymentController');
 
@@ -161,12 +172,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     });
 
-    /************************ AJAX ****************************/
-    Route::group(['prefix' => 'ajax'], function() {
-        Route::get('get_lga/{state_id}', 'AjaxController@get_lga')->name('get_lga');
-        Route::get('get_class_sections/{class_id}', 'AjaxController@get_class_sections')->name('get_class_sections');
-        Route::get('get_class_subjects/{class_id}', 'AjaxController@get_class_subjects')->name('get_class_subjects');
-    });
+
 
 });
 

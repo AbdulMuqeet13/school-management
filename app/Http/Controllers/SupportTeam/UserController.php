@@ -66,6 +66,13 @@ class UserController extends Controller
         return back()->with('flash_success', __('msg.pu_reset'));
     }
 
+    public function saveUser(UserRequest $req)
+    {
+        // dd($req);
+        $this->store($req);
+        return Qs::jsonStoreOk();
+    }
+
     public function store(UserRequest $req)
     {
         $user_type = $this->user->findType($req->user_type)->title;
@@ -99,6 +106,7 @@ class UserController extends Controller
         }
         $data['school_id'] = $req->school_id;
         $data['status'] = User::status_ACTIVE;
+        $data['subject'] = $req->subject;
 
         $user = $this->user->create($data); // Create User
 

@@ -2,7 +2,7 @@
 @section('page_title', 'My Dashboard')
 @section('content')
 
-    @if(Qs::userIsTeamSA())
+    @if(Qs::userIsSubjTeam())
        <div class="row" id="links">
         {{-- <form method="post" @submit.prevent(generateLink) enctype="multipart/form-data" class="wizard-form steps-validation ajax-store" data-fouc>
             @csrf
@@ -14,7 +14,7 @@
                             <label for="user_type"> Select User: <span class="text-danger">*</span></label>
                             <select ref="type" required data-placeholder="Select User" class="form-control select" id="user_type">
                                 @foreach($user_types as $ut)
-                                    @if ($ut->id != 5)
+                                    @if ($ut->title != 'super_admin')
                                         <option value="{{ $ut->id }}">{{ $ut->name }}</option>
                                     @endif
                                 @endforeach
@@ -24,11 +24,18 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="school"> Select School: <span class="text-danger">*</span></label>
-                            <select ref="school" required  data-placeholder="Select User" class="form-control select" id="school">
-                                @foreach($schools as $school)
-                                    <option value="{{ $school->id }}">{{ $school->name }}</option>
-                                @endforeach
-                            </select>
+                            @if (Qs::userIsTeamSA())
+                                <select ref="school" required  data-placeholder="Select User" class="form-control select" id="school">
+                                    <option value="">Select School</option>
+                                    @foreach($schools as $school)
+                                        <option value="{{ $school->id }}">{{ $school->name }}</option>
+                                    @endforeach
+                                </select>
+                            @else
+                                <select ref="school" required  data-placeholder="Select User" class="form-control select" id="school">
+                                    <option value="{{ $schools->id }}">{{ $schools->name }}</option>
+                                </select>
+                            @endif
                         </div>
                     </div>
                     <div class="col-md-12 row">

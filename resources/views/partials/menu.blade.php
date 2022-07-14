@@ -51,7 +51,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    @if (Auth::user()->user_type == "super_admin" || Auth::user()->user_type == "admin")
+                    @if (Qs::userIsSubjTeam())
                     <a href="{{ route('link.create') }}" class="nav-link {{ (Route::is('link.create')) ? 'active' : '' }}">
                         <i class="icon-hyperlink"></i>
                         <span>Create Invitation Link</span>
@@ -98,13 +98,13 @@
                 @endif
 
                 {{--Manage Students--}}
-                @if(Qs::userIsTeamSAT())
+                @if(Qs::userIsSubjTeam())
                     <li class="nav-item nav-item-submenu {{ in_array(Route::currentRouteName(), ['students.create', 'students.list', 'students.edit', 'students.show', 'students.promotion', 'students.promotion_manage', 'students.graduated']) ? 'nav-item-expanded nav-item-open' : '' }} ">
                         <a href="#" class="nav-link"><i class="icon-users"></i> <span> Students</span></a>
 
                         <ul class="nav nav-group-sub" data-submenu-title="Manage Students">
                             {{--Admit Student--}}
-                            @if(Qs::userIsTeamSA())
+                            @if(Qs::userIsSubjTeam())
                                 <li class="nav-item">
                                     <a href="{{ route('students.create') }}"
                                        class="nav-link {{ (Route::is('students.create')) ? 'active' : '' }}">Admit Student</a>
@@ -121,7 +121,7 @@
                                 </ul>
                             </li>
 
-                            @if(Qs::userIsTeamSA())
+                            @if(Qs::userIsSubjTeam())
 
                             {{--Student Promotion--}}
                             <li class="nav-item nav-item-submenu {{ in_array(Route::currentRouteName(), ['students.promotion', 'students.promotion_manage']) ? 'nav-item-expanded' : '' }}"><a href="#" class="nav-link {{ in_array(Route::currentRouteName(), ['students.promotion', 'students.promotion_manage' ]) ? 'active' : '' }}">Student Promotion</a>
@@ -174,12 +174,12 @@
                 @endif
 
                 {{--Exam--}}
-                @if(Qs::userIsTeamSAT())
+                @if(Qs::userIsSubjTeam())
                 <li class="nav-item nav-item-submenu {{ in_array(Route::currentRouteName(), ['exams.index', 'exams.edit', 'grades.index', 'grades.edit', 'marks.index', 'marks.manage', 'marks.bulk', 'marks.tabulation', 'marks.show', 'marks.batch_fix',]) ? 'nav-item-expanded nav-item-open' : '' }} ">
                     <a href="#" class="nav-link"><i class="icon-books"></i> <span> Exams</span></a>
 
                     <ul class="nav nav-group-sub" data-submenu-title="Manage Exams">
-                        @if(Qs::userIsTeamSA())
+                        @if(Qs::userIsSubjTeam())
 
                         {{--Exam list--}}
                             <li class="nav-item">
@@ -187,21 +187,25 @@
                                    class="nav-link {{ (Route::is('exams.index')) ? 'active' : '' }}">Exam List</a>
                             </li>
 
-                            {{--Grades list--}}
-                            <li class="nav-item">
+                            @if (Qs::userIsTeamSAT())
+                                 {{--Grades list--}}
+                                <li class="nav-item">
                                     <a href="{{ route('grades.index') }}"
-                                       class="nav-link {{ in_array(Route::currentRouteName(), ['grades.index', 'grades.edit']) ? 'active' : '' }}">Grades</a>
-                            </li>
+                                    class="nav-link {{ in_array(Route::currentRouteName(), ['grades.index', 'grades.edit']) ? 'active' : '' }}">Grades</a>
+                                </li>
 
-                            {{--Tabulation Sheet--}}
-                            <li class="nav-item">
-                                <a href="{{ route('marks.tabulation') }}" class="nav-link {{ in_array(Route::currentRouteName(), ['marks.tabulation']) ? 'active' : '' }}">Tabulation Sheet</a>
-                            </li>
+                                {{--Tabulation Sheet--}}
+                                <li class="nav-item">
+                                    <a href="{{ route('marks.tabulation') }}" class="nav-link {{ in_array(Route::currentRouteName(), ['marks.tabulation']) ? 'active' : '' }}">Tabulation Sheet</a>
+                                </li>
 
-                            {{--Marks Batch Fix--}}
-                            <li class="nav-item">
-                                <a href="{{ route('marks.batch_fix') }}" class="nav-link {{ in_array(Route::currentRouteName(), ['marks.batch_fix']) ? 'active' : '' }}">Batch Fix</a>
-                            </li>
+                                {{--Marks Batch Fix--}}
+                                <li class="nav-item">
+                                    <a href="{{ route('marks.batch_fix') }}" class="nav-link {{ in_array(Route::currentRouteName(), ['marks.batch_fix']) ? 'active' : '' }}">Batch Fix</a>
+                                </li>
+                            @endif
+
+
                         @endif
 
                         @if(Qs::userIsTeamSAT())
@@ -225,7 +229,7 @@
 
                 {{--End Exam--}}
 
-                @if (Auth::user()->user_type == "super_admin" || Auth::user()->user_type == "admin")
+                @if (Qs::userIsSubjTeam())
                     <li class="nav-item">
                         <a href="{{ route('schools.index') }}" class="nav-link"><i class="icon-lock2"></i>  <span>Schools</span></a>
                     </li>

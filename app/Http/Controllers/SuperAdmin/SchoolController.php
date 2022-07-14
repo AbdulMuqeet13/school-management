@@ -17,20 +17,26 @@ class SchoolController extends Controller
     protected $loc;
 
     public function __construct(LocationRepo $loc){
-        $this->middleware('super_admin', ['only' => ['reset_pass','destroy'] ]);
+        // $this->middleware('super_admin', ['only' => ['reset_pass','destroy'] ]);
         $this->loc = $loc;
     }
 
     public function index(){
-        $data['schools'] = School::all();
+        if (Qs::userIsTeamSA()){
+            $data['schools'] = School::all();
+        }
+        else{
+            $data['schools'][] = School::where('id',Auth::user()->school_id)->first();
+        }
         $data['states'] = $this->loc->getStates();
         return view('pages.super_admin.schools',$data);
     }
 
     public function store(Request $request){
-        if(!Auth::user()->user_type == 'super_admin' || !Auth::user()->user_type == 'admin'){
-            if(Auth::user()->school_id){
-                $request->validate([
+        if(!Qs::userIsTeamSA()){
+            // dd(Auth::user()->school_id);
+            if(!Auth::user()->school_id){
+                $val = $request->validate([
                     'name' => 'required|string',
                     'address' => 'required|string',
                     'email' => 'required|email',
@@ -47,9 +53,9 @@ class SchoolController extends Controller
                     'sectiion' => $request->sectiion,
                     'category' => $request->category,
                 ]);
-                User::update([
-                    'school_id' => $school->id
-                ]);
+                $user = User::find(Auth::id());
+                $user->school_id = $school->id;
+                $user->save();
                 return Qs::jsonStoreOk();
             }
             else{

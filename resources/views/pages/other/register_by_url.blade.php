@@ -12,7 +12,7 @@
                 </div>
                 <div class="card-body">
                     <div class="fade show active" >
-                        <form method="post" enctype="multipart/form-data" class=" steps-validation ajax-store" action="{{ route('users.store') }}" data-fouc>
+                        <form method="post" enctype="multipart/form-data" class=" steps-validation ajax-store" action="{{ route('user.saveByURL') }}" data-fouc>
                             @csrf
                             <fieldset>
                                 <div class="row">
@@ -20,18 +20,18 @@
                                         <div class="form-group">
                                             <label for="user_type"> User Type: <span class="text-danger">*</span></label>
                                             <input id="user_type" value="{{ Qs::hash($user_type->id) }}" required type="hidden" name="user_type" class="form-control">
-                                            <input  value="{{ $school->id }}" required type="hidden" name="school_id" class="form-control">
+                                            <input  value="{{ $school ? $school->id : '' }}" required type="hidden" name="school_id" class="form-control">
                                             <input  value="{{ $user_type->name }}" readonly required type="text" class="form-control">
                                         </div>
                                     </div>
-    
+
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Full Name: <span class="text-danger">*</span></label>
                                             <input value="{{ old('name') }}" required type="text" name="name" placeholder="Full Name" class="form-control">
                                         </div>
                                     </div>
-    
+
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Address: <span class="text-danger">*</span></label>
@@ -39,7 +39,7 @@
                                         </div>
                                     </div>
                                 </div>
-    
+
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="form-group">
@@ -47,46 +47,46 @@
                                             <input value="{{ old('email') }}" type="email" name="email" class="form-control" placeholder="your@email.com">
                                         </div>
                                     </div>
-    
+
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Username: </label>
                                             <input value="{{ old('username') }}" type="text" name="username" class="form-control" placeholder="Username">
                                         </div>
                                     </div>
-    
+
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Phone:</label>
                                             <input value="{{ old('phone') }}" type="text" name="phone" class="form-control" placeholder="+2341234567" >
                                         </div>
                                     </div>
-    
+
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Telephone:</label>
                                             <input value="{{ old('phone2') }}" type="text" name="phone2" class="form-control" placeholder="+2341234567" >
                                         </div>
                                     </div>
-    
+
                                 </div>
-    
+
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Date of Employment:</label>
                                             <input autocomplete="off" name="emp_date" value="{{ old('emp_date') }}" type="text" class="form-control date-pick" placeholder="Select Date...">
-    
+
                                         </div>
                                     </div>
-    
+
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="password">Password: </label>
                                             <input id="password" required type="password" name="password" class="form-control"  >
                                         </div>
                                     </div>
-    
+
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="gender">Gender: <span class="text-danger">*</span></label>
@@ -97,7 +97,7 @@
                                             </select>
                                         </div>
                                     </div>
-    
+
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="nal_id">Nationality: <span class="text-danger">*</span></label>
@@ -110,7 +110,7 @@
                                         </div>
                                     </div>
                                 </div>
-    
+
                                 <div class="row">
                                     {{--State--}}
                                     <div class="col-md-4">
@@ -141,11 +141,24 @@
                                             </select>
                                         </div>
                                     </div>
-    
+
                                 </div>
-    
+
                                 <div class="row">
                                     {{--PASSPORT--}}
+                                    @if ($subjects)
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="subject_id">Select Subject: </label>
+                                                <select class="select form-control" id="subject_id" name="subject" data-fouc data-placeholder="Choose..">
+                                                    <option value=""></option>
+                                                    @foreach($subjects as $subject)
+                                                        <option {{ (old('subject_id') == $subject->id ? 'selected' : '') }} value="{{ $subject->id }}">{{ $subject->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    @endif
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="d-block">Upload Passport Photo:</label>
@@ -159,9 +172,9 @@
                                     <button type="submit" class="btn-primary btn ml-auto col-1">Regiter</button>
                                 </div>
                             </fieldset>
-    
-    
-    
+
+
+
                         </form>
                     </div>
                 </div>

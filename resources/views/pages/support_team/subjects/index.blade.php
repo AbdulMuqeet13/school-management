@@ -30,7 +30,13 @@
                                 <div class="form-group row">
                                     <label for="name" class="col-lg-3 col-form-label font-weight-semibold">Name <span class="text-danger">*</span></label>
                                     <div class="col-lg-9">
-                                        <input id="name" @input="getTeachers($event)" name="name" value="{{ old('name') }}" required type="text" class="form-control" placeholder="Name of subject">
+                                        <select @change="getTeachers($event)" v-model="subjects" required data-placeholder="Select Subject" class="form-control" name="name" id="name">
+                                            <option value=""></option>
+                                            @foreach($sysSubjects as $subject)
+                                                <option {{ old('name') == $subject->id ? 'selected' : '' }} value="{{ $subject->id }}">{{ $subject->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        {{-- <input id="name" @input="getTeachers($event)" name="name" value="{{ old('name') }}" required type="text" class="form-control" placeholder="Name of subject"> --}}
                                     </div>
                                 </div>
 
@@ -58,9 +64,9 @@
                                     <div class="col-lg-9">
                                         <select required data-placeholder="Select Teacher" class="form-control select-search" name="teacher_id" id="teacher_id">
                                             <option disabled value="">Select a Teacher</option>
-                                            <template v-for="(teacher,tindex) in teachers" :key="tIndex">
-                                                <option v-for="(t,index) in teacher" :key="index" value="t.id">@{{ t.name }} - @{{ t.subject }} </option>
-                                            </template>
+                                            {{-- <template v-for="(teacher,tindex) in teachers" :key="tIndex"> --}}
+                                                <option v-for="(t,index) in teachers" :key="index" value="t.id">@{{ t.name }}</option>
+                                            {{-- </template> --}}
                                         </select>
                                     </div>
                                 </div>
@@ -137,10 +143,16 @@
             data() {
                 return {
                     teachers:[],
+                    subjects: null
                 }
+            },
+            mounted(){
+                console.log('dljsfnlkvzn');
             },
             methods:{
                 getTeachers(e){
+                    console.log('lksnflkdmj')
+                    console.log(e.target.value)
                     let input = {}
                     input.input = e.target.value
                     if (input.input){
@@ -150,7 +162,7 @@
                             console.log(this.teachers);
                         })
                     }
-                }
+                },
             }
         })
     </script>

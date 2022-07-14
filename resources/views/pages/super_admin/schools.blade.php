@@ -88,14 +88,14 @@
                                 @csrf
                                 <h6>School Information</h6>
                                 <fieldset>
-                                    <div class="row">        
+                                    <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>School Name: <span class="text-danger">*</span></label>
                                                 <input value="{{ old('name') }}" required type="text" name="name" placeholder="School Name" class="form-control">
                                             </div>
                                         </div>
-        
+
                                         <div class="col-md-8">
                                             <div class="form-group">
                                                 <label>Address: <span class="text-danger">*</span></label>
@@ -103,7 +103,7 @@
                                             </div>
                                         </div>
                                     </div>
-        
+
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="form-group">
@@ -111,29 +111,29 @@
                                                 <input value="{{ old('email') }}" type="email" name="email" class="form-control" placeholder="your@email.com">
                                             </div>
                                         </div>
-        
+
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Section: </label>
                                                 <input value="{{ old('section') }}" type="text" name="section" class="form-control" placeholder="Section">
                                             </div>
                                         </div>
-        
+
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Phone:</label>
                                                 <input value="{{ old('phone') }}" type="text" name="phone" class="form-control" placeholder="+2341234567" >
                                             </div>
-                                        </div>        
+                                        </div>
 
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>State License Number:</label>
                                                 <input value="{{ old('state_license_number') }}" type="text" name="state_license_number" class="form-control" placeholder="State License Number" >
                                             </div>
-                                        </div>        
+                                        </div>
                                     </div>
-        
+
                                     <div class="row">
                                         {{--State--}}
                                         <div class="col-md-4">
@@ -152,9 +152,9 @@
                                                 <input value="{{ old('category') }}" type="text" name="category" class="form-control" placeholder="Category" >
                                             </div>
                                         </div>
-        
+
                                     </div>
-        
+
                                     <div class="row">
                                         {{--PASSPORT--}}
                                         <div class="col-md-6">
@@ -165,11 +165,11 @@
                                             </div>
                                         </div>
                                     </div>
-        
+
                                 </fieldset>
-        
-        
-        
+
+
+
                             </form>
                         </div>
                     </div>

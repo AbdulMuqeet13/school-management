@@ -10,6 +10,7 @@ use App\Repositories\UserRepo;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SystemSubject;
+use App\User;
 
 
 class SubjectController extends Controller
@@ -29,6 +30,7 @@ class SubjectController extends Controller
     {
         $d['my_classes'] = $this->my_class->all();
         // $d['teachers'] = $this->user->getUserByType('teacher');
+        $d['sysSubjects'] = SystemSubject::all();
         $d['subjects'] = $this->my_class->getAllSubjects();
 
         return view('pages.support_team.subjects.index', $d);
@@ -82,7 +84,7 @@ class SubjectController extends Controller
     }
 
     public function getTeachers(Request $request){
-        $data['teachers'] = $this->user->getTeachersBySubjects($request->input);
+        $data['teachers'] = User::where('subject',$request->input)->get();
         return $data;
     }
 }
