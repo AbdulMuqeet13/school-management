@@ -9,6 +9,7 @@ use App\Models\School;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\SystemSubject;
+use App\Models\Subject;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -74,5 +75,10 @@ class HomeController extends Controller
         $data['blood_groups'] = $this->user->getBloodGroups();
         $data['subjects'] = $data['user_type']['title'] == 'teacher' ? SystemSubject::all() : null;
         return view('pages.other.register_by_url',$data);
+    }
+
+    public function timetable(){
+        $data['subjects'] = Subject::where('school_id',Auth::user()->school_id)->get();
+        return view('pages.timetable',$data);
     }
 }

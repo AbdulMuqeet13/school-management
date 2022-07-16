@@ -10,6 +10,7 @@ use App\Repositories\UserRepo;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SystemSubject;
+use App\Models\Subject;
 use App\User;
 
 
@@ -19,8 +20,8 @@ class SubjectController extends Controller
 
     public function __construct(MyClassRepo $my_class, UserRepo $user)
     {
-        $this->middleware('teamSA', ['except' => ['destroy',] ]);
-        $this->middleware('super_admin', ['only' => ['destroy',] ]);
+        // $this->middleware('teamSA', ['except' => ['destroy',] ]);
+        // $this->middleware('super_admin', ['only' => ['destroy',] ]);
 
         $this->my_class = $my_class;
         $this->user = $user;
@@ -54,7 +55,21 @@ class SubjectController extends Controller
 
     public function store(SubjectCreate $req)
     {
+
+        // dd($req);
         $data = $req->all();
+        $subjects = Subject::where('school_id',$req->school_id)->get();
+        foreach($subjects as $s){
+            foreach(json_decode($s->days) as $sday){
+                foreach(json_decode($req->days) as $rday){
+                    if($sday == $rday){
+                        if(strcmp($sday,$rday) == 0){
+                            return ['busyTeacher' => 'Selected Teacher is Busy at this time slot'];
+                        }
+                    }
+                }
+            }
+        }
         $this->my_class->createSubject($data);
 
         return Qs::jsonStoreOk();

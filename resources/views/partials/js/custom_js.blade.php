@@ -223,6 +223,11 @@
         };
         var req = $.ajax(ajaxOptions);
         req.done(function(resp){
+            if(resp.busyTeacher){
+                displayAjaxErr([resp.busyTeacher])
+                enableBtn(btn)
+                return
+            }
             resp.ok && resp.msg
                ? flash({msg:resp.msg, type:'success'})
                : flash({msg:resp.msg, type:'danger'});

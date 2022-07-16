@@ -14,7 +14,7 @@
                             <label for="user_type"> Select User: <span class="text-danger">*</span></label>
                             <select ref="type" required data-placeholder="Select User" class="form-control select" id="user_type">
                                 @foreach($user_types as $ut)
-                                    @if ($ut->title != 'super_admin')
+                                    @if ($ut->title != 'super_admin' && $ut->title != 'student')
                                         <option value="{{ $ut->id }}">{{ $ut->name }}</option>
                                     @endif
                                 @endforeach

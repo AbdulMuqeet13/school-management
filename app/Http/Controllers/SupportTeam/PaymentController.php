@@ -27,7 +27,7 @@ class PaymentController extends Controller
         $this->year = Qs::getCurrentSession();
         $this->student = $student;
 
-        $this->middleware('teamAccount');
+        // $this->middleware('teamAccount');
     }
 
     public function index()

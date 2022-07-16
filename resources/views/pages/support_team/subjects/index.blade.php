@@ -30,13 +30,13 @@
                                 <div class="form-group row">
                                     <label for="name" class="col-lg-3 col-form-label font-weight-semibold">Name <span class="text-danger">*</span></label>
                                     <div class="col-lg-9">
-                                        <select @change="getTeachers($event)" v-model="subjects" required data-placeholder="Select Subject" class="form-control" name="name" id="name">
+                                        <select @change="getTeachers($event)" required data-placeholder="Select Subject" class="form-control">
                                             <option value=""></option>
                                             @foreach($sysSubjects as $subject)
                                                 <option {{ old('name') == $subject->id ? 'selected' : '' }} value="{{ $subject->id }}">{{ $subject->name }}</option>
                                             @endforeach
                                         </select>
-                                        {{-- <input id="name" @input="getTeachers($event)" name="name" value="{{ old('name') }}" required type="text" class="form-control" placeholder="Name of subject"> --}}
+                                        <input id="name" name="name" v-model="subjects" value="{{ old('name') }}" required type="hidden" class="form-control" placeholder="Name of subject">
                                     </div>
                                 </div>
 
@@ -44,6 +44,28 @@
                                     <label for="slug" class="col-lg-3 col-form-label font-weight-semibold">Short Name <span class="text-danger">*</span></label>
                                     <div class="col-lg-9">
                                         <input id="slug" required name="slug" value="{{ old('slug') }}" type="text" class="form-control" placeholder="Eg. B.Eng">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="time" class="col-lg-3 col-form-label font-weight-semibold"> Select Time <span class="text-danger">*</span></label>
+                                    <div class="col-lg-9">
+                                        <input id="time" required name="time" value="{{ old('time') }}" type="time" class="form-control" placeholder="Eg. B.Eng">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="days" class="col-lg-3 col-form-label font-weight-semibold">Select Days <span class="text-danger">*</span></label>
+                                    <div class="col-lg-9">
+                                        <select required data-placeholder="Select Days" class="form-control select" multiple name="days[]" id="days">
+                                            <option value="Moday">Monday</option>
+                                            <option value="Tuesday">Tuesday</option>
+                                            <option value="Wednesday">Wednesday</option>
+                                            <option value="Thursday">Thursday</option>
+                                            <option value="Friday">Friday</option>
+                                            <option value="Saturday">Saturday</option>
+                                            <option value="Sunday">Sunday</option>
+                                        </select>
                                     </div>
                                 </div>
 
@@ -62,10 +84,11 @@
                                 <div class="form-group row">
                                     <label for="teacher_id" class="col-lg-3 col-form-label font-weight-semibold">Teacher <span class="text-danger">*</span></label>
                                     <div class="col-lg-9">
-                                        <select required data-placeholder="Select Teacher" class="form-control select-search" name="teacher_id" id="teacher_id">
+                                        <select required data-placeholder="Select Teacher" class="form-control select-search"  name="teacher_id" id="teacher_id">
                                             <option disabled value="">Select a Teacher</option>
-                                            {{-- <template v-for="(teacher,tindex) in teachers" :key="tIndex"> --}}
-                                                <option v-for="(t,index) in teachers" :key="index" value="t.id">@{{ t.name }}</option>
+                                            {{-- <template v-for="(t,index) in teachers" :key="index"> --}}
+
+                                                <option v-for="(t,index) in teachers" :key="index" :value="t.id">@{{ t.name }}</option>
                                             {{-- </template> --}}
                                         </select>
                                     </div>
@@ -131,7 +154,9 @@
 
             </div>
         </div>
+
     </div>
+
 
     {{--subject List Ends--}}
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
@@ -143,27 +168,32 @@
             data() {
                 return {
                     teachers:[],
-                    subjects: null
+                    subjects:null,
+                    teacher:null,
                 }
-            },
-            mounted(){
-                console.log('dljsfnlkvzn');
             },
             methods:{
                 getTeachers(e){
-                    console.log('lksnflkdmj')
-                    console.log(e.target.value)
                     let input = {}
+                    let subs = {!! $sysSubjects !!}
                     input.input = e.target.value
                     if (input.input){
                         axios.post('{{ route('teachers.get') }}',input)
                         .then( response => {
                             this.teachers = response.data.teachers
-                            console.log(this.teachers);
+                            for (let index = 0; index < subs.length; index++) {
+                                if(subs[index].id == e.target.value){
+                                    // Vue.set(e.target.value," ",subs[index].name)
+                                    this.subjects = subs[index].name
+                                    console.log(this.subjects);
+                                }
+                            }
+
                         })
                     }
                 },
             }
         })
+
     </script>
 @endsection

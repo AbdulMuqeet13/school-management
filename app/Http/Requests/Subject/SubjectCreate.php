@@ -4,6 +4,7 @@ namespace App\Http\Requests\Subject;
 
 use App\Helpers\Qs;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class SubjectCreate extends FormRequest
 {
@@ -25,6 +26,8 @@ class SubjectCreate extends FormRequest
             'my_class_id' => 'required',
             'teacher_id' => 'required',
             'slug' => 'nullable|string|min:3',
+            'time' => 'required',
+            'days' => 'required',
         ];
     }
 
@@ -40,8 +43,11 @@ class SubjectCreate extends FormRequest
     protected function getValidatorInstance()
     {
         $input = $this->all();
-
-        $input['teacher_id'] = $input['teacher_id'] ? Qs::decodeHash($input['teacher_id']) : NULL;
+        $input['school_id'] = Auth::user()->school_id;
+        $input['days'] = json_encode($input['days']);
+        // dd($input);
+        // $input['teacher_id'] = Qs::hash($input['teacher_id']);
+        // $input['teacher_id'] = $input['teacher_id'] ? Qs::decodeHash($input['teacher_id']) : NULL;
 
         $this->getInputSource()->replace($input);
 

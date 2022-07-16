@@ -28,6 +28,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', 'HomeController@dashboard')->name('home');
     Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
     Route::get('/link', 'HomeController@link')->name('link.create');
+    Route::get('/timetable', 'HomeController@timetable')->name('timetable');
 
     Route::get('/schools', [SchoolController::class,'index'])->name('schools.index');
     Route::post('/save-school', [SchoolController::class,'store'])->name('schools.store');
