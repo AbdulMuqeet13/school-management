@@ -49,8 +49,21 @@
 
                                 <div class="form-group row">
                                     <label for="time" class="col-lg-3 col-form-label font-weight-semibold"> Select Time <span class="text-danger">*</span></label>
+                                    <div class="col-lg-4">
+                                        <input id="time" required name="time_from" value="{{ old('time_form') }}" type="time" class="form-control" placeholder="Eg. B.Eng">
+                                    </div>
+                                    <div class="col-lg-1">
+                                        <h5>to</h5>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <input id="time" required name="time_to" value="{{ old('time_to') }}" type="time" class="form-control" placeholder="Eg. B.Eng">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="marks" class="col-lg-3 col-form-label font-weight-semibold"> Marks <span class="text-danger">*</span></label>
                                     <div class="col-lg-9">
-                                        <input id="time" required name="time" value="{{ old('time') }}" type="time" class="form-control" placeholder="Eg. B.Eng">
+                                        <input id="marks" required name="marks" value="{{ old('marks') }}" type="number" class="form-control" placeholder="Eg. 100">
                                     </div>
                                 </div>
 
@@ -111,17 +124,34 @@
                                 <th>Name</th>
                                 <th>Short Name</th>
                                 <th>Class</th>
+                                <th>Days</th>
+                                <th>Time From</th>
+                                <th>Time To</th>
+                                <th>Marks</th>
                                 <th>Teacher</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
+                            @if (count($subjects) > 0)
                             @foreach($subjects->where('my_class.id', $c->id) as $s)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $s->name }} </td>
                                     <td>{{ $s->slug }} </td>
                                     <td>{{ $s->my_class->name }}</td>
+                                    {{-- <td>
+                                        @php
+                                            $days = json_decode($s->days);
+                                            dd($days[0]);
+                                        @endphp
+                                        @for ($i=0; $i<=count($days); $i++)
+                                            {{ $days[$i] }}
+                                        @endfor
+                                    </td> --}}
+                                    <td>{{ $s->time_from }} </td>
+                                    <td>{{ $s->time_to }} </td>
+                                    <td>{{ $s->marks }} </td>
                                     <td>{{ $s->teacher->name }}</td>
                                     <td class="text-center">
                                         <div class="list-icons">
@@ -132,11 +162,11 @@
 
                                                 <div class="dropdown-menu dropdown-menu-left">
                                                     {{--edit--}}
-                                                    @if(Qs::userIsTeamSA())
+                                                    @if(Qs::userIsTeamSA() || Qs::userIsSubjTeam())
                                                         <a href="{{ route('subjects.edit', $s->id) }}" class="dropdown-item"><i class="icon-pencil"></i> Edit</a>
                                                     @endif
                                                     {{--Delete--}}
-                                                    @if(Qs::userIsSuperAdmin())
+                                                    @if(Qs::userIsSuperAdmin() || Qs::userIsSubjTeam())
                                                         <a id="{{ $s->id }}" onclick="confirmDelete(this.id)" href="#" class="dropdown-item"><i class="icon-trash"></i> Delete</a>
                                                         <form method="post" id="item-delete-{{ $s->id }}" action="{{ route('subjects.destroy', $s->id) }}" class="hidden">@csrf @method('delete')</form>
                                                     @endif
@@ -147,6 +177,7 @@
                                     </td>
                                 </tr>
                             @endforeach
+                            @endif
                             </tbody>
                         </table>
                     </div>

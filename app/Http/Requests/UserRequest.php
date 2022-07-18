@@ -22,7 +22,7 @@ class UserRequest extends FormRequest
     {
         $store =  [
             'name' => 'required|string|min:6|max:150',
-            'password' => 'nullable|string|min:3|max:50',
+            'password' => 'required|string|min:3|max:50',
             'user_type' => 'required',
             'gender' => 'required|string',
             'phone' => 'sometimes|nullable|string|min:6|max:20',

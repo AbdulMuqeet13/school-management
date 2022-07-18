@@ -26,7 +26,9 @@ class SubjectCreate extends FormRequest
             'my_class_id' => 'required',
             'teacher_id' => 'required',
             'slug' => 'nullable|string|min:3',
-            'time' => 'required',
+            'time_from' => 'required',
+            'time_to' => 'required',
+            'marks' => 'required',
             'days' => 'required',
         ];
     }

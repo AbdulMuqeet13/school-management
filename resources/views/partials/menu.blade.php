@@ -150,7 +150,7 @@
                     </li>
                 @endif
 
-                @if(Qs::userIsTeamSA())
+                @if(Qs::userIsSubjTeam())
                     {{--Manage Users--}}
                     <li class="nav-item">
                         <a href="{{ route('users.index') }}" class="nav-link {{ in_array(Route::currentRouteName(), ['users.index', 'users.show', 'users.edit']) ? 'active' : '' }}"><i class="icon-users4"></i> <span> Users</span></a>
@@ -171,17 +171,21 @@
                         <a href="{{ route('sections.index') }}" class="nav-link {{ in_array(Route::currentRouteName(), ['sections.index','sections.edit',]) ? 'active' : '' }}"><i class="icon-fence"></i> <span>Sections</span></a>
                     </li>
 
+
+
+                @endif
+
+                @if (Qs::userIsSubjTeam())
                     {{--Manage Subjects--}}
                     <li class="nav-item">
                         <a href="{{ route('subjects.system') }}" class="nav-link {{ in_array(Route::currentRouteName(), ['subjects.system','subjects.system.edit',]) ? 'active' : '' }}"><i class="icon-pin"></i> <span>Subjects for System</span></a>
                     </li>
+                    @if (!Qs::userIsTeamSA())
+                        <li class="nav-item">
+                            <a href="{{ route('subjects.index') }}" class="nav-link {{ in_array(Route::currentRouteName(), ['subjects.index','subjects.edit',]) ? 'active' : '' }}"><i class="icon-pin"></i> <span>Subjects for School</span></a>
+                        </li>
+                    @endif
 
-                @endif
-
-                @if (Qs::userIsSubjTeam() && !Qs::userIsTeamSA())
-                    <li class="nav-item">
-                        <a href="{{ route('subjects.index') }}" class="nav-link {{ in_array(Route::currentRouteName(), ['subjects.index','subjects.edit',]) ? 'active' : '' }}"><i class="icon-pin"></i> <span>Subjects for School</span></a>
-                    </li>
                 @endif
 
                 {{--Exam--}}

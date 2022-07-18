@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\SystemSubject;
 use App\Models\Subject;
 use App\User;
-
+use Carbon\Carbon;
 
 class SubjectController extends Controller
 {
@@ -55,15 +55,13 @@ class SubjectController extends Controller
 
     public function store(SubjectCreate $req)
     {
-
-        // dd($req);
         $data = $req->all();
         $subjects = Subject::where('school_id',$req->school_id)->get();
         foreach($subjects as $s){
             foreach(json_decode($s->days) as $sday){
                 foreach(json_decode($req->days) as $rday){
                     if($sday == $rday){
-                        if(strcmp($sday,$rday) == 0){
+                        if( !( (strtotime($s->time_from) <= strtotime($req->time_to) && strtotime($s->time_to) > strtotime($req->time_to)) || (strtotime($s->time_to) <= strtotime($req->time_from) && strtotime($s->time_to) < $req_end) ) ){
                             return ['busyTeacher' => 'Selected Teacher is Busy at this time slot'];
                         }
                     }

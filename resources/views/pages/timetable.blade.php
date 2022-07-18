@@ -17,7 +17,8 @@
             <tr>
                 <th>S/N</th>
                 <th>Subject</th>
-                <th>Time</th>
+                <th>Start Time</th>
+                <th>End Time</th>
                 <th>Days</th>
                 <th>Class</th>
                 <th>Teacher</th>
@@ -28,7 +29,8 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $s->name }} </td>
-                    <td>{{ $s->time }} </td>
+                    <td>{{ $s->time_from }} </td>
+                    <td>{{ $s->time_to }} </td>
                     <td>
                         @foreach (json_decode($s->days) as $day)
                             {{$day}} <br> <br>

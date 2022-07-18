@@ -8,6 +8,7 @@ use App\Http\Requests\MyClass\ClassUpdate;
 use App\Repositories\MyClassRepo;
 use App\Repositories\UserRepo;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class MyClassController extends Controller
 {
@@ -15,8 +16,8 @@ class MyClassController extends Controller
 
     public function __construct(MyClassRepo $my_class, UserRepo $user)
     {
-        $this->middleware('teamSA', ['except' => ['destroy',] ]);
-        $this->middleware('super_admin', ['only' => ['destroy',] ]);
+        // $this->middleware('teamSA', ['except' => ['destroy',] ]);
+        // $this->middleware('super_admin', ['only' => ['destroy',] ]);
 
         $this->my_class = $my_class;
         $this->user = $user;
@@ -33,6 +34,7 @@ class MyClassController extends Controller
     public function store(ClassCreate $req)
     {
         $data = $req->all();
+        $data['school_id'] = Auth::user()->school_id;
         $mc = $this->my_class->create($data);
 
         // Create Default Section

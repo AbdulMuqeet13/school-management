@@ -15,12 +15,17 @@
 
 <body class="{{ in_array(Route::currentRouteName(), ['payments.invoice', 'marks.tabulation', 'marks.show', 'ttr.manage', 'ttr.show']) ? 'sidebar-xs' : '' }}">
 
-@include('partials.top_menu')
+    @if (Auth::user())
+        @include('partials.top_menu')
+    @endif
 <div class="page-content">
-    @include('partials.menu')
+    @if (Auth::user())
+        @include('partials.menu')
+    @endif
     <div class="content-wrapper">
-        @include('partials.header')
-
+        @if (Auth::user())
+            @include('partials.header')
+        @endif
         <div class="content">
             {{--Error Alert Area--}}
             @if($errors->any())

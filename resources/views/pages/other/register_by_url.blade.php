@@ -1,8 +1,16 @@
-@extends('layouts.login_master')
-    @include('partials.inc_top')
+@extends('layouts.master')
+@include('partials.login.header')
+
 
 @section('content')
-
+<style>
+    input[type=file][data-fouc] {
+        opacity: 1;
+    }
+    .sidebar{
+        display: none
+    }
+</style>
 <div class="page-content">
     <div class="content-wrapper">
         <div class="content">
@@ -12,7 +20,7 @@
                 </div>
                 <div class="card-body">
                     <div class="fade show active" >
-                        <form method="post" enctype="multipart/form-data" class=" steps-validation ajax-store" action="{{ route('user.saveByURL') }}" data-fouc>
+                        <form method="post" enctype="multipart/form-data" class="steps-validation ajax-store" action="{{ route('user.saveByURL') }}" data-fouc>
                             @csrf
                             <fieldset>
                                 <div class="row">
@@ -82,7 +90,7 @@
 
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label for="password">Password: </label>
+                                            <label for="password">Password: <span class="text-danger">*</span></label>
                                             <input id="password" required type="password" name="password" class="form-control"  >
                                         </div>
                                     </div>
@@ -184,3 +192,4 @@
 </div>
 </div>
 @endsection
+

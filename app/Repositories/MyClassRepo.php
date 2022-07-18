@@ -6,13 +6,21 @@ use App\Models\ClassType;
 use App\Models\MyClass;
 use App\Models\Section;
 use App\Models\Subject;
+use Illuminate\Support\Facades\Auth;
+use App\Helpers\Qs;
 
 class MyClassRepo
 {
 
     public function all()
     {
-        return MyClass::orderBy('name', 'asc')->with('class_type')->get();
+        if(Qs::userIsTeamSAT()){
+            return MyClass::orderBy('name', 'asc')->with('class_type')->get();
+        }
+        if(Auth::user()->school_id){
+            return MyClass::where('school_id',Auth::user()->school_id)->orderBy('name', 'asc')->with('class_type')->get();
+        }
+        return [];
     }
 
     public function getMC($data)

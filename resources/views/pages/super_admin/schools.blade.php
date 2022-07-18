@@ -32,6 +32,8 @@
                             </tr>
                             </thead>
                             <tbody>
+                                {{-- {{dd($schools)}} --}}
+                            @if (count($schools) > 0 && !is_null($schools[0]))
                             @foreach($schools as $shcool)
                                 <tr>
                                     <td>{{ $shcool->name }}</td>
@@ -54,7 +56,7 @@
                                                     @if(Qs::userIsTeamSA()) --}}
                                                     {{--Edit--}}
                                                     {{-- <a href="{{ route('classes.edit', $c->id) }}" class="dropdown-item"><i class="icon-pencil"></i> Edit</a>
-                                                   @endif
+                                                @endif
                                                         @if(Qs::userIsSuperAdmin()) --}}
                                                     {{--Delete--}}
                                                     {{-- <a id="{{ $c->id }}" onclick="confirmDelete(this.id)" href="#" class="dropdown-item"><i class="icon-trash"></i> Delete</a> --}}
@@ -67,6 +69,15 @@
                                     </td>
                                 </tr>
                             @endforeach
+                            @else
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Please Create a School</td>
+                                </tr>
+                            @endif
                             </tbody>
                         </table>
                     </div>

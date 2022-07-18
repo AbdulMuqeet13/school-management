@@ -1,9 +1,8 @@
 @extends('layouts.master')
 @section('page_title', 'My Dashboard')
 @section('content')
-
     @if(Qs::userIsSubjTeam())
-       <div class="row" id="links">
+       <div class="row" id="new-user">
         {{-- <form method="post" @submit.prevent(generateLink) enctype="multipart/form-data" class="wizard-form steps-validation ajax-store" data-fouc>
             @csrf
             <h6>Generate Link</h6> --}}
@@ -56,7 +55,7 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
         new Vue({
-            el:'#links',
+            el:'#new-user',
             data(){
                 return {
                     link:null,
